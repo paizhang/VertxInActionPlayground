@@ -3,16 +3,30 @@ package verticals;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 
+import java.util.Arrays;
+
 public class MainClass {
+
+    // TODO: Failed with exception: current classloader must be URLClassloader.
+    public static DeploymentOptions getDeploymentOptionsForIsolationGroup() {
+        return new DeploymentOptions().setIsolationGroup("myGroup")
+                .setIsolatedClasses(Arrays.asList("com.personal.practice.Vertical.VertxInActionPlayground.verticals.HelloWorldVertical"));
+    }
+
+    public static DeploymentOptions getDeploymentOptionsWithNumberOfInstance() {
+        return new DeploymentOptions().setInstances(10);
+    }
 
     public static void main(String[] args) {
         // Created a vertx instance.
+        // TODO: How to get the number of event loops.
         Vertx vertx = Vertx.vertx();
 
         // Deploy a stander type vertical.
         // The first parameter indicates the vertical class to be deployed. The second parameter is for assigning a callback function which
         // will be called after the deployment finished.
-        DeploymentOptions deploymentOptions = new DeploymentOptions().setInstances(10);
+        // TODO: Learn more about deployment option.
+        DeploymentOptions deploymentOptions = getDeploymentOptionsWithNumberOfInstance();
 
         // If you create a vertical by passing an instance of a vertical, the number of instance has to be 1. Otherwise it will cause
         // java.lang.IllegalArgumentException: Can't specify > 1 instances for already created verticle.
@@ -29,7 +43,6 @@ public class MainClass {
                 System.out.println("Vertical deployment failed!");
             }
         });
-
 
     }
 }
